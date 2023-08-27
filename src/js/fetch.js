@@ -8,8 +8,11 @@ export const fetchParam = {
     query: '',
     currentPage: 1,
     pageNum: 40,
-    totalElem: 0
+    totalElem: 0,
+    maxPage: 1,
 };
+
+
 
 const BASE_URL = 'https://pixabay.com/api/'
 const api_key = '39038842-507cdb0c8ef13fbd02c51e5f3'
@@ -25,14 +28,19 @@ export async function fetchImage() {
         page: fetchParam.currentPage,
     });
 
+
     try {
         const res = await axios.get(`${BASE_URL}?${PARAMS}`);
         const photos = res.data.hits;
         fetchParam.totalElem = res.data.total;
+        fetchParam.maxPage = Math.ceil(res.data.total / fetchParam.pageNum)
         if (fetchParam.totalElem === 0) {
-            Notiflix.Report.info("info", "Sorry, there are no images matching your search query. Please try again.")
+            refs.load.classList.add('is-hidden');
+            Notiflix.Report.info("Information", "Sorry, there are no images matching your search query. Please try again.")
+
         } else {
             renderImagesList(photos);
+            updateStatusBtn()
         }
         return photos;
     } catch {
@@ -42,5 +50,11 @@ export async function fetchImage() {
                 'Oops! Something went wrong! Try reloading the page!',
                 'Okay',);
         }
+    }
+}
+
+function updateStatusBtn() {
+    if (fetchParam.currentPage === fetchParam.maxPage) {
+        refs.load.classList.add('is-hidden');
     }
 }

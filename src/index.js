@@ -1,4 +1,5 @@
 
+import Notiflix from 'notiflix';
 import '/src/common.css'
 import { renderImagesList } from "./js/render";
 import { refs } from "./js/refs";
@@ -11,9 +12,16 @@ refs.searchForm.addEventListener('submit', onSearchFormSubmit)
 
 function onSearchFormSubmit(evt) {
     evt.preventDefault();
-    if (refs.input.value === '') {
-
+    if (!refs.input.value.trim()) {
+        Notiflix.Report.warning(
+            'Warning',
+            'The input field must be filled!',
+            'Okay'
+        );
+        return;
     }
+
+
     fetchParam.query = refs.input.value;
     fetchParam.currentPage = 1;
     refs.gallery.innerHTML = '';
@@ -21,6 +29,9 @@ function onSearchFormSubmit(evt) {
     refs.input.value = '';
     refs.load.classList.remove('is-hidden')
 }
+
+
+
 
 refs.load.addEventListener('click', onLoadClick)
 

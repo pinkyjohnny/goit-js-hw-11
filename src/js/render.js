@@ -1,7 +1,8 @@
 import { refs } from "./refs";
 
+
 export function renderImagesList(arr) {
-    const markupImages = arr.map(image => `<div class="photo-card">
+  const markupImages = arr.map(image => `<div class="photo-card">
   <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
@@ -22,5 +23,5 @@ export function renderImagesList(arr) {
     </p>
   </div>
 </div>`).join('')
-    refs.gallery.insertAdjacentHTML('beforeend', markupImages);
+  refs.gallery.insertAdjacentHTML('beforeend', markupImages);
 }
